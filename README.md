@@ -4,6 +4,6 @@ A phoenix live view with a form that does not recover after crashes or disconnec
 
 ### Run it.
 
-> `mix phx.server`
+-  `mix phx.server`
 
-> `localhost:4000/form`
+- Go to `http://localhost:4000/form`
