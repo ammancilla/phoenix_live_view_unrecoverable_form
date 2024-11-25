@@ -21,7 +21,7 @@ defmodule FormRecoverableWeb.FormLive do
     <div class="mx-auto flex justify-between prose">
       <div>
         <h2>The Form</h2>
-        <.simple_form id="person-form" for={@form} phx-change="validate" phx-submit="submit">
+        <.simple_form id="live_view_form" for={@form} phx-change="validate" phx-submit="submit">
           <.input field={@form[:name]} label="name" />
           <:actions>
             <.button phx-disable-with="Saving...">Crash LiveView</.button>
@@ -31,11 +31,7 @@ defmodule FormRecoverableWeb.FormLive do
 
       <div>
         <h2>The Form from a Live Component</h2>
-        <.live_component
-          id="form-live-component"
-          form={@form}
-          module={FormRecoverableWeb.FormLiveComponent}
-        />
+        <.live_component id="live_component_form" module={FormRecoverableWeb.FormLiveComponent} />
       </div>
     </div>
     """
@@ -48,8 +44,8 @@ defmodule FormRecoverableWeb.FormLiveComponent do
   use FormRecoverableWeb, :live_component
 
   @impl true
-  def update(_assigns, socket) do
-    {:ok, assign(socket, :form, to_form(%{"username" => nil}))}
+  def update(assigns, socket) do
+    {:ok, socket |> assign(assigns) |> assign(:form, to_form(%{"username" => nil}))}
   end
 
   @impl true
@@ -64,7 +60,7 @@ defmodule FormRecoverableWeb.FormLiveComponent do
     ~H"""
     <div>
       <.simple_form
-        id={"#{System.unique_integer()}"}
+        id={@id}
         for={@form}
         phx-submit="submit"
         phx-target={@myself}
